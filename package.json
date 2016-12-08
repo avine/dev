@@ -1,0 +1,79 @@
+{
+  "name": "dev",
+  "version": "1.0.0",
+  "description": "dev",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "mocha",
+    "eslint": "eslint src/js && echo $(tput setaf 2)success$(tput sgr0)",
+    "folder:clean": "shx rm -rf dist/",
+    "folder:make": "shx mkdir -p dist/css dist/js dist/bundle && shx cp src/*.* dist/ && shx cp -r src/static dist/",
+    "folder": "npm run folder:clean -s && npm run folder:make -s",
+    "plugins:p1": "shx mkdir dist/css/p1 && shx touch dist/css/p1/p1.css",
+    "plugins:p2": "shx mkdir dist/css/p2 && shx touch dist/css/p2/p2.css",
+    "plugins": "npm run plugins:p1 -s & npm run plugins:p2 -s",
+    "css": "lessc --autoprefix --source-map src/less/app.less dist/css/app.css",
+    "postcss": "cleancss --source-map dist/css/app.css -o dist/css/app.min.css",
+    "js": "browserify src/js/app.js -t [ babelify ] -d | exorcist dist/js/app.js.map > dist/js/app.js",
+    "postjs": "uglifyjs dist/js/app.js -m -o dist/js/app.min.js --in-source-map dist/js/app.js.map --source-map dist/js/app.min.js.map --source-map-url app.min.js.map --source-map-root app/js",
+    "build:dev": "npm run folder -s && npm run plugins -s && npm run css -s && npm run js -s",
+    "watch:css": "chokidar 'src/less' -c 'npm run css && echo $(tput setaf 2)css done$(tput sgr0)'",
+    "watch:js": "chokidar 'src/js' -c 'npm run js && echo $(tput setaf 2)js done$(tput sgr0)'",
+    "watch:static": "chokidar 'src/*.*' 'src/static' -c 'shx cp -ru src/*.* src/static dist/ && echo $(tput setaf 2)static done$(tput sgr0)'",
+    "watch": "npm run watch:css -s & npm run watch:js -s & npm run watch:static -s",
+    "server:dev": "http-server ./ -o",
+    "env:dev": "npm run build:dev -s && ( npm run watch -s & npm run server:dev -s )",
+    "preprod:css": "shx mkdir dist/tmp/",
+    "_tmp:p1": "cleancss dist/css/p1/p1.css -o dist/tmp/p1.css",
+    "_tmp:p2": "cleancss dist/css/p2/p2.css -o dist/tmp/p2.css",
+    "_tmp:app": "cleancss dist/css/app.min.css -o dist/tmp/app.css",
+    "prod:css": "npm run _tmp:p1 -s && npm run _tmp:p2 -s && npm run _tmp:app -s",
+    "postprod:css": "shx cat dist/tmp/*.css | cleancss -o dist/bundle/bundle.min.css --s0 && shx rm -r dist/tmp/",
+    "prod:js": "uglifyjs dist/js/app.min.js -o dist/bundle/bundle.min.js",
+    "prod:index": "node useref.js",
+    "build:prod": "npm run prod:css -s && npm run prod:js -s && npm run prod:index -s",
+    "build": "npm run build:dev -s && npm run build:prod -s",
+    "server:prod": "http-server ./dist/ -o",
+    "env:prod": "npm run build -s && npm run server:prod -s"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/avine/dev.git"
+  },
+  "keywords": [
+    "Javascript",
+    "ES6"
+  ],
+  "author": {
+    "name": "Stéphane Francel",
+    "email": "s.francel@avine.fr",
+    "url": "http://avine.fr/"
+  },
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/avine/dev/issues"
+  },
+  "homepage": "https://github.com/avine/dev#readme",
+  "devDependencies": {
+    "babel-cli": "^6.18.0",
+    "babel-preset-latest": "^6.16.0",
+    "babelify": "^7.3.0",
+    "browserify": "^13.1.1",
+    "chai": "^3.5.0",
+    "chokidar-cli": "^1.2.0",
+    "clean-css": "^3.4.21",
+    "eslint": "^3.10.2",
+    "exorcist": "^0.4.0",
+    "http-server": "^0.9.0",
+    "less": "^2.7.1",
+    "less-plugin-autoprefix": "^1.5.1",
+    "less-plugin-clean-css": "^1.5.1",
+    "mocha": "^3.2.0",
+    "shx": "^0.2.1",
+    "uglify-js": "^2.7.4",
+    "useref": "^1.2.0"
+  }
+}
