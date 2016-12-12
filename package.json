@@ -37,7 +37,9 @@
     "build:prod": "npm run prod:css -s && npm run prod:js -s && npm run prod:index -s",
     "build": "npm run build:dev -s && npm run build:prod -s",
     "server:prod": "http-server ./dist/ -o",
-    "env:prod": "npm run build -s && npm run server:prod -s"
+    "env:prod": "npm run build -s && npm run server:prod -s",
+
+    "isomorphic": "babel src/js -d dist/back"
   },
   "repository": {
     "type": "git",
@@ -75,5 +77,8 @@
     "shx": "^0.2.1",
     "uglify-js": "^2.7.4",
     "useref": "^1.2.0"
+  },
+  "dependencies": {
+    "jquery": "^3.1.1"
   }
 }
