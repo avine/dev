@@ -4,7 +4,7 @@
 import tool from './tool.js';
 import Core from './Core.js';
 
-export default { tool, Core };
+export { tool, Core };
 
 /*var avine = { tool, Core };
 if ('object' === typeof window) {
