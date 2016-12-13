@@ -17,6 +17,7 @@
     "plugins": "npm run plugins:p1 -s & npm run plugins:p2 -s",
     "css": "lessc --autoprefix --source-map src/less/app.less dist/css/app.css",
     "postcss": "cleancss --source-map dist/css/app.css -o dist/css/app.min.css",
+    "prejs": "babel src/js -d dist/server -s",
     "js": "browserify src/js/app.js -t [ babelify ] -d | exorcist dist/js/app.js.map > dist/js/app.js",
     "postjs": "uglifyjs dist/js/app.js -m -o dist/js/app.min.js --in-source-map dist/js/app.js.map --source-map dist/js/app.min.js.map --source-map-url app.min.js.map --source-map-root app/js",
     "build:dev": "npm run folder -s && npm run plugins -s && npm run css -s && npm run js -s",
@@ -37,9 +38,7 @@
     "build:prod": "npm run prod:css -s && npm run prod:js -s && npm run prod:index -s",
     "build": "npm run build:dev -s && npm run build:prod -s",
     "server:prod": "http-server ./dist/ -o",
-    "env:prod": "npm run build -s && npm run server:prod -s",
-
-    "isomorphic": "babel src/js -d dist/back"
+    "env:prod": "npm run build -s && npm run server:prod -s"
   },
   "repository": {
     "type": "git",
