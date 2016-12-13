@@ -6,9 +6,4 @@ import Core from './Core.js';
 
 export { tool, Core };
 
-/*var avine = { tool, Core };
-if ('object' === typeof window) {
-  window.avine = avine;
-} else {
-  console.log(avine);
-}*/
+//global.avine = { tool, Core };

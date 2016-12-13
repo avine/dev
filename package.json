@@ -8,7 +8,7 @@
   },
   "scripts": {
     "test": "mocha",
-    "eslint": "eslint src/js && echo $(tput setaf 2)success$(tput sgr0)",
+    "eslint": "eslint src/js && echo $(tput setaf 2)eslint success$(tput sgr0)",
     "folder:clean": "shx rm -rf dist/",
     "folder:make": "shx mkdir -p dist/client/css dist/client/js dist/client/bundle && shx cp src/*.* dist/client/ && shx cp -r src/static dist/client/",
     "folder": "npm run folder:clean -s && npm run folder:make -s",
@@ -19,7 +19,7 @@
     "prejs": "babel src/js -d dist/server/ -s > dist/tmp.txt && shx rm dist/tmp.txt",
     "js": "browserify src/js/app.js -t [ babelify ] -d | exorcist dist/client/js/app.js.map > dist/client/js/app.js",
     "postjs": "uglifyjs dist/client/js/app.js -m -o dist/client/js/app.min.js --in-source-map dist/client/js/app.js.map --source-map dist/client/js/app.min.js.map --source-map-url app.min.js.map --source-map-root app/js",
-    "build:dev": "npm run folder -s && npm run plugins -s && npm run css -s && npm run js -s",
+    "build:dev": "npm run eslint -s && npm run folder -s && npm run plugins -s && npm run css -s && npm run js -s",
     "watch:css": "chokidar 'src/less' -c 'npm run css && echo $(tput setaf 2)css done$(tput sgr0)'",
     "watch:js": "chokidar 'src/js' -c 'npm run js && echo $(tput setaf 2)js done$(tput sgr0)'",
     "watch:static": "chokidar 'src/*.*' 'src/static' -c 'shx cp -ru src/*.* src/static dist/client/ && echo $(tput setaf 2)static done$(tput sgr0)'",
@@ -58,6 +58,7 @@
   "homepage": "https://github.com/avine/dev#readme",
   "devDependencies": {
     "babel-cli": "^6.18.0",
+    "babel-plugin-transform-es2015-modules-umd": "^6.18.0",
     "babel-preset-latest": "^6.16.0",
     "babelify": "^7.3.0",
     "browserify": "^13.1.1",
