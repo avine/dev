@@ -2,7 +2,9 @@
 'use strict';
 
 var expect = require('chai').expect;
-var tool = require('../dist/server/app.js').tool;
+
+require('babel-register');
+var tool = require('../src/js/app.js').tool;
 
 var values = {
   boolean : [true, false, new Boolean(true), new Boolean(false)],

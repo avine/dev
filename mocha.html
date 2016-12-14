@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+
+  <title>Mocha and Chai tests</title>
+
+  <link href="node_modules/mocha/mocha.css" rel="stylesheet" />
+</head>
+<body>
+  <div id="mocha"></div>
+
+  <script src="node_modules/mocha/mocha.js"></script>
+  <script src="node_modules/chai/chai.js"></script>
+
+  <script>
+    var expect = chai.expect;
+    mocha.setup('bdd');
+    describe('Mocha and Chai tests', function () {
+      it('should be ok', function () {
+        expect(true).to.be.true;
+      });
+    });
+    mocha.run();
+  </script>
+</body>
+</html>
