@@ -7,16 +7,15 @@
     "test": "test"
   },
   "scripts": {
-    "test": "mocha",
     "eslint": "eslint src/js && echo $(tput setaf 2)eslint success$(tput sgr0)",
-    "folder:clean": "shx rm -rf dist/",
+    "folder:clean": "shx rm -rf dist/ test/",
     "folder:make": "shx mkdir -p dist/client/css dist/client/js dist/client/bundle && shx cp src/*.* dist/client/ && shx cp -r src/static dist/client/",
     "folder": "npm run folder:clean -s && npm run folder:make -s",
     "plugins:fa": "shx mkdir dist/client/css/font-awesome && shx cp -r node_modules/font-awesome/css/ node_modules/font-awesome/fonts/ dist/client/css/font-awesome/",
     "plugins": "npm run plugins:fa -s",
     "css": "lessc --autoprefix --source-map src/less/app.less dist/client/css/app.css",
     "postcss": "cleancss --source-map dist/client/css/app.css -o dist/client/css/app.min.css",
-    "prejs": "babel src/js -d dist/server/ -s > dist/tmp.txt && shx rm dist/tmp.txt",
+    "prejs": "babel src/js -d dist/server/ -s inline > dist/tmp.txt && shx rm dist/tmp.txt",
     "js": "browserify src/js/app.js -t [ babelify ] -d | exorcist dist/client/js/app.js.map > dist/client/js/app.js",
     "postjs": "uglifyjs dist/client/js/app.js -m -o dist/client/js/app.min.js --in-source-map dist/client/js/app.js.map --source-map dist/client/js/app.min.js.map --source-map-url app.min.js.map --source-map-root app/js",
     "build:dev": "npm run eslint -s && npm run folder -s && npm run plugins -s && npm run css -s && npm run js -s",
@@ -32,11 +31,16 @@
     "bundle:css": "npm run _tmp:fa -s && npm run _tmp:app -s",
     "postbundle:css": "shx cat dist/client/tmp/*.css | cleancss -o dist/client/bundle/bundle.min.css --s0 && shx rm -r dist/client/tmp/",
     "bundle:js": "uglifyjs dist/client/js/app.min.js -o dist/client/bundle/bundle.min.js",
-    "bundle:index": "node useref.js",
+    "bundle:index": "node useref-index.js",
     "bundle": "npm run bundle:css -s && npm run bundle:js -s && npm run bundle:index -s",
     "build": "npm run build:dev -s && npm run bundle -s",
     "prod:server": "http-server ./dist/client/ -o",
-    "prod": "npm run build -s && npm run prod:server -s"
+    "prod": "npm run build -s && npm run prod:server -s",
+    "pretest": "shx rm -rf test/ && babel src/js -d test/ -s inline > tmp.txt && shx rm tmp.txt",
+    "test": "mocha test/test/",
+    "preclient-test": "shx mkdir -p dist/client/test/ && cp node_modules/mocha/mocha.css node_modules/mocha/mocha.js node_modules/chai/chai.js dist/client/test/",
+    "client-test": "browserify test/test/* -d -o dist/client/test.js",
+    "postclient-test": "shx cp test.html dist/client/"
   },
   "repository": {
     "type": "git",

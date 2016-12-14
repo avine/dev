@@ -4,6 +4,6 @@
 import tool from './tool.js';
 import Core from './Core.js';
 
-export { tool, Core };
-
-//global.avine = { tool, Core };
+var avine = { tool, Core };
+global.avine = avine;
+export default avine;

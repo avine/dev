@@ -1,7 +1,7 @@
 
 'use strict';
 
-import jQuery from 'jquery';
+var jQuery;//import jQuery from 'jquery';
 import tool from './tool.js';
 
 // This class helps to call asynchronous methods sequentially without using nested functions
