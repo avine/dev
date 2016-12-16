@@ -15,43 +15,47 @@ var values = {
   function: [function () {}, new Function()]
 };
 
-describe('Bi.tool.typeOf(data)', function () {
-  it('should return the data type', function () {
-    for (let type in values) {
-      values[type].forEach(function (value) {
-        // Return value type
-        expect( tool.typeOf(value) ).to.equal(type);
-      });
-    }
-  });
-});
+describe('Bi.tool.typeOf', function () {
 
-describe('Bi.tool.typeOf(data, type)', function () {
-  it('should match data against type', function () {
-    for (let type in values) {
-      values[type].forEach(function (value) {
-        // Check value against type
-        expect( tool.typeOf(value, type) ).to.be.true;
-        // Check wrong type
-        let wrongType = 'string' !== type ? 'string' : 'boolean';
-        expect( tool.typeOf(value, wrongType) ).to.be.false;
-        // Check against array of types
-        expect( tool.typeOf(value, [wrongType, type]) ).to.be.true;
-      });
-    }
+  describe('Bi.tool.typeOf(data)', function () {
+    it('should return the data type', function () {
+      for (let type in values) {
+        values[type].forEach(function (value) {
+          // Return value type
+          expect( tool.typeOf(value) ).to.equal(type);
+        });
+      }
+    });
   });
-});
 
-describe('Bi.tool.is.*(data)', function () {
-  it('should match data against *', function () {
-    for (let type in values) {
-      values[type].forEach(function (value) {
-        // Use tool.is.boolean(true), tool.is.string('hello') ...
-        expect( tool.is[type](value) ).to.be.true;
-        // Check wrong type
-        let wrongType = 'string' !== type ? 'string' : 'boolean';
-        expect( tool.is[wrongType](value) ).to.be.false;
-      });
-    }
+  describe('Bi.tool.typeOf(data, type)', function () {
+    it('should match data against type', function () {
+      for (let type in values) {
+        values[type].forEach(function (value) {
+          // Check value against type
+          expect( tool.typeOf(value, type) ).to.be.true;
+          // Check wrong type
+          let wrongType = 'string' !== type ? 'string' : 'boolean';
+          expect( tool.typeOf(value, wrongType) ).to.be.false;
+          // Check against array of types
+          expect( tool.typeOf(value, [wrongType, type]) ).to.be.true;
+        });
+      }
+    });
   });
+
+  describe('Bi.tool.is.*(data)', function () {
+    it('should match data against *', function () {
+      for (let type in values) {
+        values[type].forEach(function (value) {
+          // Use tool.is.boolean(true), tool.is.string('hello') ...
+          expect( tool.is[type](value) ).to.be.true;
+          // Check wrong type
+          let wrongType = 'string' !== type ? 'string' : 'boolean';
+          expect( tool.is[wrongType](value) ).to.be.false;
+        });
+      }
+    });
+  });
+
 });
