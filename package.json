@@ -41,7 +41,10 @@
     "preclient-test": "shx mkdir -p dist/client/test/ && cp node_modules/mocha/mocha.css node_modules/mocha/mocha.js node_modules/chai/chai.js dist/client/test/",
     "client-test": "browserify test/test/* -d -o dist/client/test.js",
     "postclient-test": "shx cp test.html dist/client/",
-    "doc": "jsdoc src/**/* -d dist/jsdoc/ & esdoc -c esdoc.json"
+
+    "doc:jsdoc": "jsdoc src/js/* -c .jsdoc.json",
+    "doc:esdoc": "esdoc -c .esdoc.json",
+    "doc": "npm run doc:jsdoc & npm run doc:esdoc"
   },
   "repository": {
     "type": "git",
@@ -71,6 +74,7 @@
     "chai": "^3.5.0",
     "chokidar-cli": "^1.2.0",
     "clean-css": "^3.4.21",
+    "docdash": "^0.4.0",
     "esdoc": "^0.4.8",
     "eslint": "^3.10.2",
     "exorcist": "^0.4.0",
