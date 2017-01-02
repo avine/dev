@@ -42,7 +42,7 @@
     "client-test": "browserify test/test/* -d -o dist/client/test.js",
     "postclient-test": "shx cp test.html dist/client/",
 
-    "doc:jsdoc": "jsdoc src/js/* -c .jsdoc.json",
+    "doc:jsdoc": "jsdoc src/js/**/* -c .jsdoc.json",
     "doc:esdoc": "esdoc -c .esdoc.json",
     "doc": "npm run doc:jsdoc & npm run doc:esdoc"
   },

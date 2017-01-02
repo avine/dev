@@ -1,5 +1,58 @@
 
 'use strict';
+/*
+var tool = {};
+
+// Return or check data type (type parameter is optional)
+//      - If 2 arguments are given then the function is checking data against type and returns a boolean
+//        (In this case, type can be a string or an array of strings of the expected types)
+//      - Otherwise the function returns the data type as a string in lower case
+tool.typeOf = function (data, type) {
+  var t = Object.prototype.toString.call(data).toLowerCase().match(/\[object\s([a-z]+)\]/)[1];
+  return arguments.length < 2 ? t : -1 !== [].concat(type).indexOf(t);
+};
+
+tool.is = {};
+
+['boolean', 'number', 'string', 'array', 'object', 'function'].forEach(function (type) {
+  tool.is[type] = function (data) {
+    return tool.typeOf(data, type);
+  };
+});
+
+tool.string = {};
+
+// Removes all leading and trailing space characters from the string
+tool.string.trim = function (str) {
+  return (str || '').replace(/\s+/g, ' ').replace(/^\s|\s$/g, '');
+};
+
+// Splits the string into an array of substrings using separator(s) and apply tool.string.trim to its parts
+// The separator is treated as a string or a regular expression.
+tool.string.split = function (str, sep, skipEmpty) {
+  if (undefined === skipEmpty) skipEmpty = true;
+  str = (str || '').split(sep);
+  for (var split = [], n = str.length, i = 0; i < n; i++) {
+    str[i] = tool.string.trim(str[i]);
+    if (str[i] || !skipEmpty) split.push(str[i]);
+  }
+  return split;
+};
+
+tool.string.toNumber = function (str) {
+  var num = parseFloat(str);
+  if (!isNaN(num) && /^\s*(\+|-)?([0-9]+\.?[0-9]*|\.[0-9]+)(e(\+|-)?[0-9]+)?\s*$/.test(str)) {
+    return num; // Looks like a float !
+  }
+  return NaN;
+};
+
+tool.String = class {
+  static trim (str) {
+    return (str || '').replace(/\s+/g, ' ').replace(/^\s|\s$/g, '');
+  }
+};
+*/
 
 var tool = {
 

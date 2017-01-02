@@ -4,7 +4,7 @@
 import chai from 'chai';
 var expect = chai.expect;
 
-import tool from '../tool.js';
+import { typeOf, is } from '../Tool/tool.js';
 
 var values = {
   boolean : [true, false, new Boolean(true), new Boolean(false)],
@@ -22,7 +22,7 @@ describe('Bi.tool.typeOf', function () {
       for (let type in values) {
         values[type].forEach(function (value) {
           // Return value type
-          expect( tool.typeOf(value) ).to.equal(type);
+          expect( typeOf(value) ).to.equal(type);
         });
       }
     });
@@ -33,12 +33,12 @@ describe('Bi.tool.typeOf', function () {
       for (let type in values) {
         values[type].forEach(function (value) {
           // Check value against type
-          expect( tool.typeOf(value, type) ).to.be.true;
+          expect( typeOf(value, type) ).to.be.true;
           // Check wrong type
           let wrongType = 'string' !== type ? 'string' : 'boolean';
-          expect( tool.typeOf(value, wrongType) ).to.be.false;
+          expect( typeOf(value, wrongType) ).to.be.false;
           // Check against array of types
-          expect( tool.typeOf(value, [wrongType, type]) ).to.be.true;
+          expect( typeOf(value, [wrongType, type]) ).to.be.true;
         });
       }
     });
@@ -48,11 +48,11 @@ describe('Bi.tool.typeOf', function () {
     it('should match data against *', function () {
       for (let type in values) {
         values[type].forEach(function (value) {
-          // Use tool.is.boolean(true), tool.is.string('hello') ...
-          expect( tool.is[type](value) ).to.be.true;
+          // Use is.boolean(true), is.string('hello') ...
+          expect( is[type](value) ).to.be.true;
           // Check wrong type
           let wrongType = 'string' !== type ? 'string' : 'boolean';
-          expect( tool.is[wrongType](value) ).to.be.false;
+          expect( is[wrongType](value) ).to.be.false;
         });
       }
     });

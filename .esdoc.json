@@ -1,4 +1,13 @@
 {
   "source": "./src/js",
-  "destination": "./dist/esdoc"
+  "destination": "./dist/esdoc",
+  "test": {
+    "type": "mocha",
+    "source": "./dist/client"
+  },
+  "manual": {
+    "overview": ["./manual/overview.md"]
+  },
+  "scripts": ["./manual/script.js"],
+  "styles": ["./manual/style.css"]
 }
