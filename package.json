@@ -37,14 +37,11 @@
     "prod:server": "http-server ./dist/client/ -o",
     "prod": "npm run build -s && npm run prod:server -s",
     "pretest": "shx rm -rf test/ && babel src/js -d test/ -s inline > tmp.txt && shx rm tmp.txt",
-    "test": "mocha test/test/",
+    "test": "mocha test/test/**",
     "preclient-test": "shx mkdir -p dist/client/test/ && cp node_modules/mocha/mocha.css node_modules/mocha/mocha.js node_modules/chai/chai.js dist/client/test/",
     "client-test": "browserify test/test/* -d -o dist/client/test.js",
     "postclient-test": "shx cp test.html dist/client/",
-
-    "doc:jsdoc": "jsdoc src/js/**/* -c .jsdoc.json",
-    "doc:esdoc": "esdoc -c .esdoc.json",
-    "doc": "npm run doc:jsdoc & npm run doc:esdoc"
+    "esdoc": "esdoc -c .esdoc.json"
   },
   "repository": {
     "type": "git",
@@ -74,13 +71,11 @@
     "chai": "^3.5.0",
     "chokidar-cli": "^1.2.0",
     "clean-css": "^3.4.21",
-    "docdash": "^0.4.0",
     "esdoc": "^0.4.8",
     "eslint": "^3.10.2",
     "exorcist": "^0.4.0",
     "font-awesome": "^4.7.0",
     "http-server": "^0.9.0",
-    "jsdoc": "^3.4.3",
     "less": "^2.7.1",
     "less-plugin-autoprefix": "^1.5.1",
     "less-plugin-clean-css": "^1.5.1",

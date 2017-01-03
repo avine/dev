@@ -4,7 +4,7 @@
 import chai from 'chai';
 var expect = chai.expect;
 
-import { signature, is } from '../Tool/tool.js';
+import { signature, is } from '../../Tool/tool.js';
 
 var tests = [
   [ [1      ], [is.number, is.boolean], [1, undefined] ],

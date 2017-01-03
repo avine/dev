@@ -4,7 +4,7 @@
 import chai from 'chai';
 var expect = chai.expect;
 
-import { string } from '../Tool/tool.js';
+import { string } from '../../Tool/tool.js';
 
 describe('tool.string.split', function () {
   it('should works', function () {

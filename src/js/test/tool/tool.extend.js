@@ -4,7 +4,7 @@
 import chai from 'chai';
 var expect = chai.expect;
 
-import { extend } from '../Tool/tool.js';
+import { extend } from '../../Tool/tool.js';
 
 describe('tool.extend', function () {
 

@@ -4,7 +4,7 @@
 import chai from 'chai';
 var expect = chai.expect;
 
-import { typeOf, is } from '../Tool/tool.js';
+import { typeOf, is } from '../../Tool/tool.js';
 
 var values = {
   boolean : [true, false, new Boolean(true), new Boolean(false)],
