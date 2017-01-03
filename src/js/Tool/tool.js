@@ -73,6 +73,23 @@ export class is {
 }
 
 /**
+ * Split the string into an array of substrings using separator(s) and apply string.trim to its parts.
+ * 
+ * @param {String} str - The string to process.
+ * @param {String|RegExp} sep - The separator to use.
+ * @param {Boolean} [skipEmpty=true] - Skip the array items that are empty strings.
+ * @returns {Array}
+ */
+/*export function splitString(str, sep, skipEmpty = true) {
+  var split = [];
+  (str || '').split(sep).forEach(s => {
+    s = (s || '').replace(/\s+/g, ' ').replace(/^\s|\s$/g, '');
+    if (s || !skipEmpty) split.push(s);
+  });
+  return split;
+}*/
+
+/**
  * A class of static methods for manipulating strings.
  */
 export class string {
@@ -88,12 +105,11 @@ export class string {
   }
 
   /**
-   * Split the string into an array of substrings using separator(s)
-   * and apply string.trim to its parts.
+   * Split the string into an array of substrings using separator(s) and apply string.trim to its parts.
    * 
    * @param {String} str - The string to process.
-   * @param {String|RegExp} sep - The separator to use to split the string.
-   * @param {Boolean} [skipEmpty=true] - Skip the array items that are empty strings
+   * @param {String|RegExp} sep - The separator to use.
+   * @param {Boolean} [skipEmpty=true] - Skip the array items that are empty strings.
    * @returns {Array}
    */
   static split(str, sep, skipEmpty = true) {
@@ -110,7 +126,7 @@ export class string {
 /**
  * A class of static methods for manipulating arrays.
  */
-export class array {
+//export class array {
 
   /**
    * Determine whether the `value` exists in the `array` items.
@@ -121,12 +137,12 @@ export class array {
    * 
    * @returns {Boolean}
    */
-  static exists(value, array, strict = true) {
+  /*static exists(value, array, strict = true) {
     if (strict && Array.indexOf) return -1 !== array.indexOf(value);
     var isEqual = strict ? (a, b) => a === b : (a, b) => a == b;
     for (let i = 0, n = array.length; i < n; i++) if (isEqual(value, array[i])) return true;
     return false;
-  }
+  }*/
 
   /**
    * Return an new array of unduplicated values.
@@ -136,13 +152,13 @@ export class array {
    * 
    * @returns {Array}
    */
-  static unique(array, strict) {
+  /*static unique(array, strict) {
     var newArray = [];
     array.forEach(item => array.exists(item, newArray, strict) || newArray.push(item));
     return newArray;
-  }
+  }*/
 
-}
+//}
 
 /**
  * Merge the contents of two or more arguments together into the first argument.

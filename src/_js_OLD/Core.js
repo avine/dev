@@ -326,7 +326,8 @@ Core.prototype = {
       var listener = this._stack.listeners[i];
       if (
         core && listener.core !== core ||
-        events.length && !tool.array.exists(listener.type, events) ||
+        events.length && ~events.indexOf(listener.type) ||
+        //events.length && !tool.array.exists(listener.type, events) ||
         fn && listener.fn !== fn
       ) continue;
       listener.remove();

@@ -41,6 +41,7 @@
     "preclient-test": "shx mkdir -p dist/client/test/ && cp node_modules/mocha/mocha.css node_modules/mocha/mocha.js node_modules/chai/chai.js dist/client/test/",
     "client-test": "browserify test/test/*.js test/test/**/*.js -d -o dist/client/test.js",
     "postclient-test": "shx cp test.html dist/client/",
+    "full-test": "npm test -s && npm run client-test -s",
     "esdoc": "esdoc -c .esdoc.json"
   },
   "repository": {
