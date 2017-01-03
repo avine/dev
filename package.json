@@ -39,7 +39,7 @@
     "pretest": "shx rm -rf test/ && babel src/js -d test/ -s inline > tmp.txt && shx rm tmp.txt",
     "test": "mocha test/test/**",
     "preclient-test": "shx mkdir -p dist/client/test/ && cp node_modules/mocha/mocha.css node_modules/mocha/mocha.js node_modules/chai/chai.js dist/client/test/",
-    "client-test": "browserify test/test/* -d -o dist/client/test.js",
+    "client-test": "browserify test/test/*.js test/test/**/*.js -d -o dist/client/test.js",
     "postclient-test": "shx cp test.html dist/client/",
     "esdoc": "esdoc -c .esdoc.json"
   },
