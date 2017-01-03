@@ -1,3 +1,4 @@
+/*! @author: Stephane Francel - Avine.fr */
 'use strict';
 
 import * as tool from '../Tool/tool.js';
@@ -7,6 +8,9 @@ import * as tool from '../Tool/tool.js';
  */
 export default class Core {
 
+  /**
+   * The blabla constructor !
+   */
   constructor() {
     this._stack = _emptyStack();
     this.lastResult = undefined; // Public 'dynamic' property

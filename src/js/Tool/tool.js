@@ -2,14 +2,14 @@
 'use strict';
 
 /**
- * Determines or checks the type of `data`.
+ * Determine or check the `data` type.
  * 
- * @param {*} data - The data to be analyzed.
+ * @param {*} data - The data to check.
  * @param {String|String[]} [type] - The expected type(s).
  * 
  * @returns {String|Boolean}
- * Returns the type of the `data` as string.
- * If the parameter `type` is set then matches the `data` against the expected types(s) as boolean.
+ * Return the `data` type as string.
+ * If the `type` argument is filled then match the `data` type against the expected types(s) as boolean.
  * 
  * @example
  * typeOf({}); // = object
@@ -23,7 +23,7 @@ export function typeOf(data, type) {
 }
 
 /**
- * Checks the type of `data`.
+ * A class of static methods that check the `data` type.
  *
  * @example
  * is.number(1); // = true
@@ -33,38 +33,38 @@ export function typeOf(data, type) {
  */
 export class is {
 
-  /** Check if the `data` is a boolean.
-   * @param {*} data - The data to be checked.
+  /** Check if the `data` type is a boolean.
+   * @param {*} data - The data to check.
    * @returns {Boolean} */
   static boolean(data) {
     return typeOf(data, 'boolean');
   }
-  /** Check if the `data` is a number.
-   * @param {*} data - The data to be checked.
+  /** Check if the `data` type is a number.
+   * @param {*} data - The data to check.
    * @returns {Boolean} */
   static number(data) {
     return typeOf(data, 'number');
   }
-  /** Check if the `data` is a string.
-   * @param {*} data - The data to be checked.
+  /** Check if the `data` type is a string.
+   * @param {*} data - The data to check.
    * @returns {Boolean} */
   static string(data) {
     return typeOf(data, 'string');
   }
-  /** Check if the `data` is an array.
-   * @param {*} data - The data to be checked.
+  /** Check if the `data` type is an array.
+   * @param {*} data - The data to check.
    * @returns {Boolean} */
   static array(data) {
     return typeOf(data, 'array');
   }
-  /** Check if the `data` is an object.
-   * @param {*} data - The data to be checked.
+  /** Check if the `data` type is an object.
+   * @param {*} data - The data to check.
    * @returns {Boolean} */
   static object(data) {
     return typeOf(data, 'object');
   }
-  /** Check if the `data` is a function.
-   * @param {*} data - The data to be checked.
+  /** Check if the `data` type is a function.
+   * @param {*} data - The data to check.
    * @returns {Boolean} */
   static function(data) {
     return typeOf(data, 'function');
@@ -73,12 +73,12 @@ export class is {
 }
 
 /**
- * Class of static methods for manipulating strings.
+ * A class of static methods for manipulating strings.
  */
 export class string {
 
   /**
-   * Removes all leading and trailing space characters from the string.
+   * Remove all leading and trailing space characters from the string.
    * 
    * @param {String} str - The string to process.
    * @returns {String}
@@ -88,7 +88,7 @@ export class string {
   }
 
   /**
-   * Splits the string into an array of substrings using separator(s)
+   * Split the string into an array of substrings using separator(s)
    * and apply string.trim to its parts.
    * 
    * @param {String} str - The string to process.
@@ -108,14 +108,14 @@ export class string {
 }
 
 /**
- * Class of static methods for manipulating arrays.
+ * A class of static methods for manipulating arrays.
  */
 export class array {
 
   /**
    * Determine whether the `value` exists in the `array` items.
    * 
-   * @param {*} value - The value to check.
+   * @param {*} value - The expected value to be found in the array.
    * @param {Array} array - The array.
    * @param {Boolean} [strict=true] - Use strict comparison.
    * 
@@ -129,9 +129,9 @@ export class array {
   }
 
   /**
-   * Returns an new array of unduplicated values.
+   * Return an new array of unduplicated values.
    * 
-   * @param {Array} array - The original array.
+   * @param {Array} array - The array to process.
    * @param {Boolean} [strict=true] - Use strict comparison.
    * 
    * @returns {Array}
@@ -145,9 +145,33 @@ export class array {
 }
 
 /**
- * Deep-duplication and merging a collection of variables into a `data`.
+ * Merge the contents of two or more arguments together into the first argument.
  * 
- * @param {*} data
+ * This function accepts any number of arguments.
+ * 
+ * If the first argument is `null` then determine its type from the second argument.
+ * 
+ * @returns {*} The merging result.
+ * 
+ * @param {Object|Array|null} data - The argument to which the others are merged.
+ * 
+ * @returns {*} The merging result.
+ * 
+ * @example <caption>With objects</caption>
+ * let obj = { a:0 };
+ * let ext = extend(obj, { b:1 }, { c:2, d:3 }); // = { a:0, b:1, c:2, d:3 }
+ * ext === obj; // true
+ * obj.a === 0; // true
+ * obj.b === 0; // true
+ * ...
+ * 
+ * @example <caption>With arrays</caption>
+ * let arr = ['a'];
+ * let ext = extend(arr, ['b'], ['c', 'd']); // = ['a', 'b', 'c', 'd']
+ * ext === arr; // true
+ * arr[0] === 'a'; // true
+ * arr[1] === 'b'; // true
+ * ...
  */
 export function extend(data/*, addon1, addon2, ...*/) {
   for (let i = 1; i < arguments.length; i++) {
@@ -172,17 +196,19 @@ export function extend(data/*, addon1, addon2, ...*/) {
 }
 
 /**
- * Return expected signature of arguments.
+ * Return an expected signature of arguments.
  * 
- * @param {Array} args
- * @param {Array} types
+ * @param {Array} args - List of unnormalized arguments.
+ * @param {Function[]} types - List of functions that represents the expected signature.
+ * Each function must return true when the given argument has the expected type.
  * 
- * @returns {Array}
+ * @returns {Array} List of normalized arguments.
  * 
  * @example
  * signature([1      ], [is.number, is.boolean]) // = [1, undefined]
  * signature([1, true], [is.number, is.boolean]) // = [1, true]
  * signature([true   ], [is.number, is.boolean]) // = [undefined, true]
+ * signature([true, 1], [is.number, is.boolean]) // = [undefined, true]
  */
 export function signature(args, types) {
   var s = [], i = 0;

@@ -15,9 +15,9 @@ var values = {
   function: [function () {}, new Function()]
 };
 
-describe('Bi.tool.typeOf', function () {
+describe('tool.typeOf', function () {
 
-  describe('Bi.tool.typeOf(data)', function () {
+  describe('tool.typeOf(data)', function () {
     it('should return the data type', function () {
       for (let type in values) {
         values[type].forEach(function (value) {
@@ -28,7 +28,7 @@ describe('Bi.tool.typeOf', function () {
     });
   });
 
-  describe('Bi.tool.typeOf(data, type)', function () {
+  describe('tool.typeOf(data, type)', function () {
     it('should match data against type', function () {
       for (let type in values) {
         values[type].forEach(function (value) {
@@ -44,7 +44,7 @@ describe('Bi.tool.typeOf', function () {
     });
   });
 
-  describe('Bi.tool.is.*(data)', function () {
+  describe('tool.is.*(data)', function () {
     it('should match data against *', function () {
       for (let type in values) {
         values[type].forEach(function (value) {

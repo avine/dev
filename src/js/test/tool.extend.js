@@ -6,7 +6,7 @@ var expect = chai.expect;
 
 import { extend } from '../Tool/tool.js';
 
-describe('Bi.tool.extend', function () {
+describe('tool.extend', function () {
 
   describe('With Object', function () {
     var data = { a: 0 };
