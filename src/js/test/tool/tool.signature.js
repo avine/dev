@@ -14,7 +14,7 @@ var tests = [
 ];
 
 describe('tool.signature', function () {
-  it('should works', function () {
+  it('should work', function () {
 
     tests.forEach(function (test) {
 

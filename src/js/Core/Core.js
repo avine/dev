@@ -2,21 +2,29 @@
 'use strict';
 
 import * as tool from '../Tool/tool.js';
+import CoreError from './CoreError.js';
 
 /**
- * This class helps to call asynchronous methods sequentially without using nested functions
+ * Call asynchronous methods sequentially without using nested functions.
  */
 export default class Core {
 
   /**
-   * The blabla constructor !
+   * The class constructor.
    */
   constructor() {
     this._stack = _emptyStack();
-    this.lastResult = undefined; // Public 'dynamic' property
-    this.currentMethod = undefined; // Public 'dynamic' property
+
+    /** The result propagated by the previous function in the stack. */
+    this.lastResult = undefined;
+
+    /** The name of the function being executed (when available).
+     * @type {String} */
+    this.currentMethod = undefined;  
+
+    // Call the builder method (if defined) and propagate arguments
     var builder = _getBuilder(Core); // = 'buildCore'
-    if (this[builder]) this[builder].apply(this, arguments); // Call the builder method (if defined) and propagate arguments
+    if (this[builder]) this[builder].apply(this, arguments);
   }
 
   /**
@@ -56,21 +64,26 @@ export default class Core {
    * Push asynchronous function in the stack 
    * (notice that when it's called in the event handler, it can break the propagation of the last result)
    */
-  then(fn, argsStack, invoke) {
+  then(fn, argsStack, invoke = 'call') {
     var _f = this._stack.fn;
     if (!_f.length) _f[0] = []; // Init the main stack
     if (undefined === argsStack || !argsStack.length) {
       _f[0].push(fn); // Push the function once in the stack
-    } else do {
+    } else {
+      if ('call' !== invoke && 'apply' !== invoke) {
+        throw new CoreError('Invalid argument invoke!');
+      }
       if (invoke != 'apply') invoke = 'call'; // Use fn.apply() or fn.call() to invoke the function
-      var i = i || 0;
-      _f[0].push(function (i) {
-        fn[invoke](this, argsStack[i], // Push the function on each set of arguments
-          function(r) { this.done(r); }.bind(this), // Make available the 'done' method as parameter (only if invoke='call')
-          function(r) { this.fail(r); }.bind(this) // Make available the 'fail' method as parameter (only if invoke='call')
-        );
-      }.bind(this, i));
-    } while (++i < argsStack.length);
+      do {
+        var i = i || 0;
+        _f[0].push(function (i) {
+          fn[invoke](this, argsStack[i], // Push the function on each set of arguments
+            function(r) { this.done(r); }.bind(this), // Make available the 'done' method as parameter (only if invoke='call')
+            function(r) { this.fail(r); }.bind(this) // Make available the 'fail' method as parameter (only if invoke='call')
+          );
+        }.bind(this, i));
+      } while (++i < argsStack.length);
+    }
 
     if (!this._stack.start) {
       this._stack.start = true;
@@ -178,6 +191,10 @@ export default class Core {
    */
   thenDone(_this) {
     if (this === _this) {
+
+//      throw new CoreError('Bi.Core.thenDone: Improper use of the method. ' +
+//        'Instead of calling this.thenDone(this) simply call this.done().');
+
       tool.console.error('Bi.Core.thenDone: Improper use of the method. ' +
         'Instead of calling this.thenDone(this) simply call this.done().');
       this.done(); // Fallback

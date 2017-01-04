@@ -19,7 +19,7 @@ describe('tool.extend', function () {
       });
       expect( _data ).to.equal( data );
     });
-    it('should accept multiple aguments', function () {
+    it('should accept multiple arguments', function () {
       expect( extend(data, { b: 1 }, { c: 2 }) ).to.deep.equal({ 
         a: 0, b: 1, c: 2
       });
@@ -41,10 +41,10 @@ describe('tool.extend', function () {
       expect( data ).to.deep.equal( [0, 1] );
       expect( _data ).to.equal( data );
     });
-    it('should accept multiple aguments', function () {
+    it('should accept multiple arguments', function () {
       expect( extend(data, [1], [2]) ).to.deep.equal( [0, 1, 2] );
     });
-    it('should Work with object by adding properties to the array (not items)', function () {
+    it('should work with object by adding properties to the array (not items)', function () {
       extend(data, { a: 'A', b: 'B' });
       expect( 'A' === data.a && 'B' === data.b ).to.be.true;
     });
