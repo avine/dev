@@ -9,34 +9,40 @@ import { extend } from '../../Tool/tool.js';
 describe('tool.extend', function () {
 
   describe('With Object', function () {
-    var data = { a: 0 };
+    var data;
+    beforeEach(() => data = { a: 0 });
 
     it('should return the first given argument', function () {
       var _data = extend(data, { b: 1 });
-      expect( _data ).to.equal(_data);
+      expect( data ).to.deep.equal({
+        a: 0, b: 1
+      });
+      expect( _data ).to.equal( data );
     });
     it('should accept multiple aguments', function () {
-      expect( extend(data, { c: 2 }, { d: 3 }) ).to.deep.equal({ 
-        a: 0, b: 1, c: 2, d: 3 
+      expect( extend(data, { b: 1 }, { c: 2 }) ).to.deep.equal({ 
+        a: 0, b: 1, c: 2
       });
     });
     it('should work with array', function () {
       expect( extend(data, ['a', 'b']) ).to.deep.equal({ 
-        a: 0, b: 1, c: 2, d: 3, 0: 'a', 1: 'b' 
+        a: 0, '0': 'a', '1': 'b' 
       });
     });
 
   });
 
   describe('With Array', function () {
-    var data = [0];
+    var data;
+    beforeEach(() => data = [0]);
 
     it('should return the first given argument', function () {
       var _data = extend(data, [1]);
-      expect( _data ).to.equal(_data);
+      expect( data ).to.deep.equal( [0, 1] );
+      expect( _data ).to.equal( data );
     });
     it('should accept multiple aguments', function () {
-      expect( extend(data, [2], [3]) ).to.deep.equal([0, 1, 2, 3]);
+      expect( extend(data, [1], [2]) ).to.deep.equal( [0, 1, 2] );
     });
     it('should Work with object by adding properties to the array (not items)', function () {
       extend(data, { a: 'A', b: 'B' });

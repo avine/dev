@@ -17,7 +17,10 @@ describe('tool.signature', function () {
   it('should works', function () {
 
     tests.forEach(function (test) {
-      expect( signature(test[0], test[1]) ).to.deep.equal( test[2] );
+
+      var args = test[0], types = test[1], result = test[2];
+      expect( signature(args, types) ).to.deep.equal( result );
+
     });
 
   });

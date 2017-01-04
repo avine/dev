@@ -25,6 +25,8 @@ export function typeOf(data, type) {
 /**
  * A class of static methods that check the `data` type.
  *
+ * The type checking uses the function {@link typeOf}.
+ *
  * @example
  * is.number(1); // = true
  * is.string('a'); // = true
@@ -73,23 +75,6 @@ export class is {
 }
 
 /**
- * Split the string into an array of substrings using separator(s) and apply string.trim to its parts.
- * 
- * @param {String} str - The string to process.
- * @param {String|RegExp} sep - The separator to use.
- * @param {Boolean} [skipEmpty=true] - Skip the array items that are empty strings.
- * @returns {Array}
- */
-/*export function splitString(str, sep, skipEmpty = true) {
-  var split = [];
-  (str || '').split(sep).forEach(s => {
-    s = (s || '').replace(/\s+/g, ' ').replace(/^\s|\s$/g, '');
-    if (s || !skipEmpty) split.push(s);
-  });
-  return split;
-}*/
-
-/**
  * A class of static methods for manipulating strings.
  */
 export class string {
@@ -99,6 +84,9 @@ export class string {
    * 
    * @param {String} str - The string to process.
    * @returns {String}
+   * 
+   * @example
+   * string.trim('  a b c  '); // = 'a b c'
    */
   static trim(str) {
     return (str || '').replace(/\s+/g, ' ').replace(/^\s|\s$/g, '');
@@ -111,6 +99,12 @@ export class string {
    * @param {String|RegExp} sep - The separator to use.
    * @param {Boolean} [skipEmpty=true] - Skip the array items that are empty strings.
    * @returns {Array}
+   *
+   * @example
+   * string.split('  a   b   c  ', ' '       ); // = ['a', 'b', 'c']
+   * string.split('  a , b ; c  ', /,|;/     ); // = ['a', 'b', 'c']
+   * string.split('  a ,   , c  ', ','       ); // = ['a', 'c']
+   * string.split('  a ,   , c  ', ',', false); // = ['a', '', 'c']
    */
   static split(str, sep, skipEmpty = true) {
     var split = [];
@@ -122,43 +116,6 @@ export class string {
   }
 
 }
-
-/**
- * A class of static methods for manipulating arrays.
- */
-//export class array {
-
-  /**
-   * Determine whether the `value` exists in the `array` items.
-   * 
-   * @param {*} value - The expected value to be found in the array.
-   * @param {Array} array - The array.
-   * @param {Boolean} [strict=true] - Use strict comparison.
-   * 
-   * @returns {Boolean}
-   */
-  /*static exists(value, array, strict = true) {
-    if (strict && Array.indexOf) return -1 !== array.indexOf(value);
-    var isEqual = strict ? (a, b) => a === b : (a, b) => a == b;
-    for (let i = 0, n = array.length; i < n; i++) if (isEqual(value, array[i])) return true;
-    return false;
-  }*/
-
-  /**
-   * Return an new array of unduplicated values.
-   * 
-   * @param {Array} array - The array to process.
-   * @param {Boolean} [strict=true] - Use strict comparison.
-   * 
-   * @returns {Array}
-   */
-  /*static unique(array, strict) {
-    var newArray = [];
-    array.forEach(item => array.exists(item, newArray, strict) || newArray.push(item));
-    return newArray;
-  }*/
-
-//}
 
 /**
  * Merge the contents of two or more arguments together into the first argument.
@@ -231,3 +188,61 @@ export function signature(args, types) {
   types.forEach(type => s.push(type(args[i]) ? args[i++] : undefined));
   return s;
 }
+
+
+
+// ------ DEPRECATED ------
+
+/**
+ * Split the string into an array of substrings using separator(s) and apply string.trim to its parts.
+ * 
+ * @param {String} str - The string to process.
+ * @param {String|RegExp} sep - The separator to use.
+ * @param {Boolean} [skipEmpty=true] - Skip the array items that are empty strings.
+ * @returns {Array}
+ */
+/*export function splitString(str, sep, skipEmpty = true) {
+  var split = [];
+  (str || '').split(sep).forEach(s => {
+    s = (s || '').replace(/\s+/g, ' ').replace(/^\s|\s$/g, '');
+    if (s || !skipEmpty) split.push(s);
+  });
+  return split;
+}*/
+
+/**
+ * A class of static methods for manipulating arrays.
+ */
+//export class array {
+
+  /**
+   * Determine whether the `value` exists in the `array` items.
+   * 
+   * @param {*} value - The expected value to be found in the array.
+   * @param {Array} array - The array.
+   * @param {Boolean} [strict=true] - Use strict comparison.
+   * 
+   * @returns {Boolean}
+   */
+  /*static exists(value, array, strict = true) {
+    if (strict && Array.indexOf) return -1 !== array.indexOf(value);
+    var isEqual = strict ? (a, b) => a === b : (a, b) => a == b;
+    for (let i = 0, n = array.length; i < n; i++) if (isEqual(value, array[i])) return true;
+    return false;
+  }*/
+
+  /**
+   * Return an new array of unduplicated values.
+   * 
+   * @param {Array} array - The array to process.
+   * @param {Boolean} [strict=true] - Use strict comparison.
+   * 
+   * @returns {Array}
+   */
+  /*static unique(array, strict) {
+    var newArray = [];
+    array.forEach(item => array.exists(item, newArray, strict) || newArray.push(item));
+    return newArray;
+  }*/
+
+//}
