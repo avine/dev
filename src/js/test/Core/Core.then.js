@@ -8,7 +8,7 @@ import Core from '../../Core/Core.js';
 
 describe('Core.prototype.then', function () {
 
-  it('should work', function (_done_) {
+  it('should push the function in the stack', function (_done_) {
 
     new Core().then(function () {
 
@@ -32,7 +32,33 @@ describe('Core.prototype.then', function () {
 
   });
 
-  it('should work', function () {
+  it('should be able to be nested', function (_done_) {
+
+    new Core().then(function () {
+
+      this.then(function (result) {
+
+        expect( result ).to.equal( 'Step1' );
+        this.done('Step2');
+
+      }).then(function (result) {
+
+        expect( result ).to.equal( 'Step2' );
+        this.done('Step3');
+      });
+      this.done('Step1');
+
+    }).then(function (result) {
+
+      expect( result ).to.equal( 'Step3' );
+      this.done();
+
+      _done_();
+    });
+
+  });
+
+  it('should work with "call" and "apply" parameter', function () {
   
     // Invoke fn.call(this, argsStack[i])
     var call = ['1', '2'];

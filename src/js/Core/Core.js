@@ -101,7 +101,7 @@ export default class Core {
       // Push the function on each argsStack item.
       argsStack.forEach((args) => _f[0].push(
         // Make available the `done` and `fail` methods as parameters (only if invoke='call').
-        // Notice that each function can return 'once' to determine whether the function should be looped
+        // Notice that each function can return 'once' to determine whether the function should be looped.
         () => fn[invoke](this, args, this.done.bind(this), this.fail.bind(this))
       ));
     }
@@ -164,33 +164,49 @@ export default class Core {
 
   /**
    * Call the next asynchronous function in the stack
+   * 
+   * @param {*} result - The result propagated by the previous function in the stack
    */
   done(result) {
-    this.lastResult = result; // Make the last result available in the next method as a property
+    // Make the last result available in the next method as a property
+    this.lastResult = result;
+
     var _f = this._stack.fn;
     while (_f.length) {
       if (_f[0].length) {
-        var fn = _f[0].shift(); // Get the next function in the FIFO stack
-        if (_f[0].length) _f.unshift([]); // Dedicate an empty main stack to the next method (defer what remains in the stack)
+        // Get the next function in the FIFO stack
+        var fn = _f[0].shift();
+
+        // Dedicate an empty main stack to the next method (defer what remains in the stack)
+        if (_f[0].length) _f.unshift([]);
+
         var fnCall = function () {
-          this.currentMethod = undefined; // Reset the previous method name (in case the next method is anonymous)
+          // Reset the previous method name (in case the next method is anonymous)
+          this.currentMethod = undefined;
+
           // Call the function in the appropriate context
-          // In case the next function is anonymous, make the last result also available as its parameter (in case the argsStack parameter in the 'then' method was empty)
-          return fn.call(this, this.lastResult,
-            function(r) { this.done(r); }.bind(this),
-            function(r) { this.fail(r); }.bind(this)
-          );
+          // In case the next function is anonymous, make the last result also available as its parameter
+          // (in case the argsStack parameter in the 'then' method was empty)
+          return fn.call(this, this.lastResult, this.done.bind(this), this.fail.bind(this));
         }.bind(this);
-        // Execute the function (check its return and _stack.loop property to determine whether the function should be looped)
+
+        // Execute the function (check its return and _stack.loop property
+        // to determine whether the function should be looped)
         return 'once' === fnCall() || false === this._stack.loop || this._stack.done.push(fnCall);
       } else {
         _f.shift();
       }
     }
+
     // When the FIFO stack is empty, it means that the execution is ended
     // (until an asynchronous call to the 'then' method occurs and restarts execution)
-    this._stack.start = false; // Make possible the restart of execution
-    this._callback('complete'); // Execute registered 'complete' callbacks
+
+    // Make possible the restart of execution
+    this._stack.start = false;
+
+    // Execute registered 'complete' callbacks
+    this._callback('complete');
+
     // Loop the stack if requested
     if (this._stack.loop) {
       while (this._stack.done.length) this.then(this._stack.done.shift());
