@@ -33,14 +33,10 @@ describe('Core.prototype.then', function () {
   });
 
   it('should work', function () {
-
-    var core = new Core();
-
-    var call = ['1', '2'];
-    var apply = [ ['1.1', '1.2'], ['2.1', '2.2'] ];
-
+  
     // Invoke fn.call(this, argsStack[i])
-    core.then(function (param) {
+    var call = ['1', '2'];
+    new Core().then(function (param) {
 
       expect( param ).to.equal( call.shift() );
       this.done();
@@ -48,7 +44,8 @@ describe('Core.prototype.then', function () {
     }, [].concat(call)/*, 'call'*/);
 
     // Invoke fn.apply(this, argsStack[i])
-    core.then(function (param1, param2) {
+    var apply = [ ['1.1', '1.2'], ['2.1', '2.2'] ];
+    new Core().then(function (param1, param2) {
 
       var current = apply.shift();
 
