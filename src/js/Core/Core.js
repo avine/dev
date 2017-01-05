@@ -2,7 +2,7 @@
 'use strict';
 
 import * as tool from '../Tool/tool.js';
-import CoreError from './CoreError.js';
+//import CoreError from './CoreError.js';
 
 /**
  * Call asynchronous methods sequentially without using nested functions.
@@ -11,6 +11,9 @@ export default class Core {
 
   /**
    * The class constructor.
+   * 
+   * @example
+   * var core = new Core();
    */
   constructor() {
     this._stack = _emptyStack();
@@ -22,13 +25,13 @@ export default class Core {
      * @type {String} */
     this.currentMethod = undefined;  
 
-    // Call the builder method (if defined) and propagate arguments
+    // Call the builder method (if defined) and propagate arguments.
     var builder = _getBuilder(Core); // = 'buildCore'
     if (this[builder]) this[builder].apply(this, arguments);
   }
 
   /**
-   * Clone the Core instance to create parallel call stacks and prevent competitors call problems !
+   * Clone the Core instance to create parallel call stacks and prevent competitors call problems!
    */
   clone(callbacks, listeners) {
     var clone = Object.create(this);
@@ -61,42 +64,78 @@ export default class Core {
   }
 
   /**
-   * Push asynchronous function in the stack 
-   * (notice that when it's called in the event handler, it can break the propagation of the last result)
+   * Push asynchronous function in the stack.
+   * Notice that when it's called in the event handler, it can break the propagation of the last result.
+   *
+   * @param {Function} fn - The asynchronous function to push in the stack.
+   * @param {Array} [argsStack] - The list of arguments.
+   * @param {String} [invoke='call'] - The method to invoke to execute the function on each `argsStack`.
+   * 
+   * @returns {Core} The current Core instance.
+   * 
+   * @example
+   * new Core().then(function () {
+   * 
+   *   setTimeout(() => this.done('Hello'), 10); // asynchronous resolution
+   * 
+   * }).then(function (result) { // = 'Hello'
+   * 
+   *   this.lastResult === result; // = true
+   *
+   *   this.done();
+   * });
    */
   then(fn, argsStack, invoke = 'call') {
     var _f = this._stack.fn;
-    if (!_f.length) _f[0] = []; // Init the main stack
+
+    // Init the main stack.
+    if (!_f.length) _f[0] = [];
+
     if (undefined === argsStack || !argsStack.length) {
-      _f[0].push(fn); // Push the function once in the stack
+      // Push the function once in the stack.
+      _f[0].push(fn);
     } else {
-      if ('call' !== invoke && 'apply' !== invoke) {
-        throw new CoreError('Invalid argument invoke!');
-      }
-      if (invoke != 'apply') invoke = 'call'; // Use fn.apply() or fn.call() to invoke the function
-      do {
-        var i = i || 0;
-        _f[0].push(function (i) {
-          fn[invoke](this, argsStack[i], // Push the function on each set of arguments
-            function(r) { this.done(r); }.bind(this), // Make available the 'done' method as parameter (only if invoke='call')
-            function(r) { this.fail(r); }.bind(this) // Make available the 'fail' method as parameter (only if invoke='call')
-          );
-        }.bind(this, i));
-      } while (++i < argsStack.length);
+      // Use fn.apply() or fn.call() to invoke the function.
+      if (invoke != 'apply') invoke = 'call';
+
+      // Push the function on each argsStack item.
+      argsStack.forEach((args) => _f[0].push(
+        // Make available the `done` and `fail` methods as parameters (only if invoke='call').
+        // Notice that each function can return 'once' to determine whether the function should be looped
+        () => fn[invoke](this, args, this.done.bind(this), this.fail.bind(this))
+      ));
     }
 
+    // The first push starts the stack execution.
     if (!this._stack.start) {
       this._stack.start = true;
-      // Schedule the 'done' method to be executed once the current javascript call stack is empty
-      /*
-      setTimeout(function () { this.done(this.lastResult); }.bind(this), 0); // The first push starts the stack execution
-      */this.done(this.lastResult);
+      this.done(this.lastResult);
     }
     return this;
   }
 
   /**
-   * Push synchronous function in the stack (the 'done' method is invoked automatically)
+   * Push synchronous function in the stack (the `done` method is invoked automatically).
+   * 
+   * @param {Function} fn - The asynchronous function to push in the stack.
+   * 
+   * @returns {Core} The current Core instance.
+   * 
+   * @example
+   * new Core().then(function () {
+   * 
+   *   setTimeout(() => this.done('Hello'), 10); // asynchronous resolution
+   * 
+   * }).queue(function (result) { // = 'Hello'
+   * 
+   *   this.lastResult === result; // = true
+   *
+   *   // No call to the `done` method!
+   *
+   * }).then(function (result) { // = 'Hello'
+   *
+   *     this.done();
+   * });
    */
   queue(fn) {
     return this.then(function () {
